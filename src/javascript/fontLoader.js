@@ -5,4 +5,4 @@ const fontLoader = (name, url) => {
   }).catch((error) => error);
 };
 
-module.exports = fontLoader;
+export default fontLoader;

@@ -39,4 +39,4 @@ const gameConfig = {
   spikeSpawnRate: 10000,
 };
 
-module.exports = gameConfig;
+export default gameConfig;

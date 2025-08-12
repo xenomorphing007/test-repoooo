@@ -207,21 +207,6 @@ export default class Game extends Phaser.Scene {
 
       this.platformOverlap();
 
-      if (this.skeletonGroup.getLength()) {
-        this.skeletonGroup.getChildren().forEach(skeleton => {
-          this.skeletonOverlap = this.physics.add.overlap(this.player, skeleton, () => {
-            if (this.player.anims.getName() === 'attack') {
-              this.skeletonAlive = false;
-              skeleton.anims.playReverse('skeleton_death');
-            }
-          });
-
-          if (skeleton.anims.getName() === 'skeleton_death') {
-            this.physics.world.removeCollider(this.skeletonOverlap);
-          }
-        });
-      }
-
       this.backgroundParallax();
 
       this.scoreText.setText(`SCORE: ${this.score}`);
@@ -373,6 +358,14 @@ export default class Game extends Phaser.Scene {
     skeleton.anims.playReverse('skeleton_walking');
     skeleton.setImmovable();
 
+    // Create overlap for attack detection
+    this.physics.add.overlap(this.player, skeleton, () => {
+      if (this.player.anims.getName() === 'attack') {
+        this.skeletonAlive = false;
+        skeleton.anims.playReverse('skeleton_death');
+      }
+    });
+
     this.skeletonGroup.add(skeleton);
   }
 
@@ -389,9 +382,9 @@ export default class Game extends Phaser.Scene {
       this.platformGroup.getChildren().forEach(platform => {
         const platformPosY = platform.body.y - platform.body.height + 10.5;
 
-        this.physics.add.overlap(this.player, platform, () => {
+        if (this.player.y < platformPosY && this.player.y > platformPosY - 10.5 && this.alive) {
           this.player.y = platformPosY - 10.5;
-        });
+        }
       });
     }
   }

@@ -32,4 +32,4 @@ const createAligned = (scene, heightDiff, image, origin, widthDiff = 0) => {
   return m;
 };
 
-module.exports = createAligned;
+export default createAligned;
